@@ -112,5 +112,9 @@ python eval_crisismmd.py
 python eval_hateful.py
 ```
 
+## Citation
+```
+```
+
 ## Acknowledgements
 This repo is based on [MiniCPM-V](https://github.com/OpenBMB/MiniCPM-V) and [OpenFedLLM](https://github.com/rui-ye/OpenFedLLM), thanks to the original authors for their works!
