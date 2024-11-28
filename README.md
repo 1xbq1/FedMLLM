@@ -118,6 +118,12 @@ python eval_hateful.py
 
 ## Citation
 ```
+@article{xu2024fedmllm,
+  title={FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data},
+  author={Xu, Binqian and Shu, Xiangbo and Mei, Haiyang and Xie, Guosen and Fernando, Basura and Shou, Mike Zheng and Tang, Jinhui},
+  journal={arXiv preprint arXiv:2411.14717},
+  year={2024}
+}
 ```
 
 ## Acknowledgements
