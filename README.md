@@ -8,7 +8,10 @@
 
 ## Directory Structure
 
-```plaintext
+<details>
+  <summary>Click to expand / collapse</summary>
+
+```base
 .
 └── root/
     ├── data/
