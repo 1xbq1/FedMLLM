@@ -1,4 +1,5 @@
-## FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data [pdf](https://arxiv.org/pdf/2411.14717)
+## FedMLLM
+FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data [arXiv](https://arxiv.org/pdf/2411.14717v2)
 
 <p align="center">
   <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/FedMLLM.PNG" width="80%"/>
