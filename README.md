@@ -1,12 +1,8 @@
 ## FedMLLM
 FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data [arXiv](https://arxiv.org/pdf/2411.14717v2)
 
-<div style="display: flex; align-items: center;">
-  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/Overview.PNG" alt="Wide Image" style="width: 70%; margin-right: 10px;">
-  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/Idea.PNG" alt="Narrow Image" style="width: 30%;">
-</div>
-
-
+| ![Wide Image](https://github.com/1xbq1/FedMLLM/blob/main/assets/Overview.PNG) | ![Narrow Image](https://github.com/1xbq1/FedMLLM/blob/main/assets/Idea.PNG) |
+|:-----------------------------:|:--------------------------------:|
 
 ## Directory Structure
 
