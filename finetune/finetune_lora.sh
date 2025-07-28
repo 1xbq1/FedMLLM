@@ -7,8 +7,10 @@ MASTER_ADDR=localhost
 MASTER_PORT=6001
 
 MODEL="openbmb/MiniCPM-V-2_6-int4"
+#MODEL="openbmb/MiniCPM-Llama3-V-2_5"
 DATA="/path/to/training_data/data/hateful_memes/minicpmv_data/modality-missing/mrate-0.3/partition-alpha0.5-clt10"
 LLM_TYPE="qwen2" 
+#LLM_TYPE="llama3"
 MODEL_MAX_Length=1200
 
 DISTRIBUTED_ARGS="
