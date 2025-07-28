@@ -95,6 +95,7 @@ FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data [arXiv](htt
 ## Install
 ```Shell
 conda create -n FedMLLM python=3.10 -y
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 pip install -r requirements.txt
 ```
 
