@@ -46,7 +46,7 @@ def remove_url(text):
 
 def run_inference(args):
     model_type=  "openbmb/MiniCPM-V-2_6-int4"
-    path_to_adapter="./output/output__lora/checkpoint-50"
+    path_to_adapter=f"./output/output__lora/checkpoint-{args.epoch}"
 
     model =  AutoModel.from_pretrained(
         model_type,
@@ -126,6 +126,7 @@ if __name__ == "__main__":
     parser.add_argument('--test-csv', default='../../data/crisis-mmd/raw_data/crisismmd_datasplit_all/task_humanitarian_text_img_test.tsv')
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--num-workers", type=int, default=8)
+    parser.add_argument("--epoch", type=int, default=40)
     args = parser.parse_args()
 
     run_inference(args)
