@@ -41,7 +41,7 @@ def meld_dump(instruct, outputs):
 
 def run_inference(args):
     model_type=  "openbmb/MiniCPM-V-2_6-int4"
-    path_to_adapter="./output/output__lora/checkpoint-50"
+    path_to_adapter=f"./output/output__lora/checkpoint-{args.epoch}"
 
     model =  AutoModel.from_pretrained(
         model_type,
@@ -113,6 +113,7 @@ if __name__ == "__main__":
     parser.add_argument('--test-csv', default='../../data/hateful_memes/raw_data/test_seen.jsonl')
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--num-workers", type=int, default=8)
+    parser.add_argument("--epoch", type=int, default=25)
     args = parser.parse_args()
 
     run_inference(args)
