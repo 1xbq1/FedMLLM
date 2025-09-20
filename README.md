@@ -5,7 +5,7 @@ FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data [arXiv](htt
 |:-----------------------------:|:--------------------------------:|
 
 ## YOCO
-YOCO: One-shot Federated Learning for Multimodal Large Language Models
+You Only Communicate Once: One-shot Federated Learning for Multimodal Large Language Models
 > 🏆 Accepted at **NeurIPS 2025**  
 
 <p align="center">
