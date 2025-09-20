@@ -151,7 +151,7 @@ sh start.sh
   year={2024}
 }
 
-@inproceedings{xudofit,
+@inproceedings{xu2025you,
   title={You Only Communicate Once: One-shot Federated Low-Rank Adaptation of MLLM},
   author={Binqian Xu, Haiyang Mei, Zechen Bai, Jinjin Gong, Rui Yan, Guo-Sen Xie, Yazhou Yao, Basura Fernando, Xiangbo Shu},
   booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems}
