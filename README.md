@@ -10,6 +10,11 @@ YOCO: One-shot Federated Learning for Multimodal Large Language Models
 ![YOCO idea](https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_idea.PNG)
 ![YOCO Overview](https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_overview.PNG)
 
+<p align="center">
+  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_idea.PNG" alt="YOCO idea" width="600"/>
+</p>
+
+
 ## TODO
 - [ ] Release YOCO code (Coming soon)
 
