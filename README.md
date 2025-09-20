@@ -4,6 +4,15 @@ FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data [arXiv](htt
 | ![Wide Image](https://github.com/1xbq1/FedMLLM/blob/main/assets/Overview.PNG) | ![Narrow Image](https://github.com/1xbq1/FedMLLM/blob/main/assets/Idea.PNG) |
 |:-----------------------------:|:--------------------------------:|
 
+## YOCO
+YOCO: One-shot Federated Learning for Multimodal Large Language Models
+> 🏆 Accepted at **NeurIPS 2025**  
+![YOCO idea](https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_idea.PNG)
+![YOCO Overview](https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_overview.PNG)
+
+## TODO
+- [ ] Release YOCO code (Coming soon)
+
 ## Directory Structure
 
 <details>
@@ -141,6 +150,13 @@ sh start.sh
   journal={arXiv preprint arXiv:2411.14717},
   year={2024}
 }
+
+@inproceedings{xudofit,
+  title={You Only Communicate Once: One-shot Federated Low-Rank Adaptation of MLLM},
+  author={Binqian Xu, Haiyang Mei, Zechen Bai, Jinjin Gong, Rui Yan, Guo-Sen Xie, Yazhou Yao, Basura Fernando, Xiangbo Shu},
+  booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems}
+}
+
 ```
 
 ## Acknowledgements
