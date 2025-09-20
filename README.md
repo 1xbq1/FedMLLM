@@ -7,13 +7,13 @@ FedMLLM: Federated Fine-tuning MLLM on Multimodal Heterogeneity Data [arXiv](htt
 ## YOCO
 YOCO: One-shot Federated Learning for Multimodal Large Language Models
 > 🏆 Accepted at **NeurIPS 2025**  
-![YOCO idea](https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_idea.PNG)
-![YOCO Overview](https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_overview.PNG)
 
 <p align="center">
   <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_idea.PNG" alt="YOCO idea" width="800"/>
 </p>
-
+<p align="center">
+  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_overview.PNG" alt="YOCO Overview" width="800"/>
+</p>
 
 ## TODO
 - [ ] Release YOCO code (Coming soon)
