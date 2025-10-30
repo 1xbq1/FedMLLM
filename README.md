@@ -9,10 +9,10 @@ You Only Communicate Once: One-shot Federated Learning for Multimodal Large Lang
 > 🏆 Accepted at **NeurIPS 2025**  
 
 <p align="center">
-  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_idea.PNG" alt="YOCO idea" width="720"/>
+  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_idea.PNG" alt="YOCO idea" width="680"/>
 </p>
 <p align="center">
-  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_overview.PNG" alt="YOCO Overview" width="720"/>
+  <img src="https://github.com/1xbq1/FedMLLM/blob/main/assets/YOCO_overview.PNG" alt="YOCO Overview" width="680"/>
 </p>
 
 ## TODO
