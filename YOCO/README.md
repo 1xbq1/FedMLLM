@@ -24,7 +24,7 @@ If you find this code useful for your research, please cite our NeurIPS 2025 pap
   author={Binqian Xu and Haiyang Mei and Zechen Bai and Jinjin Gong and Rui Yan and Guo-Sen Xie and Yazhou Yao and Basura Fernando and Xiangbo Shu},
   booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
   year={2025},
-  url={[https://openreview.net/forum?id=FoVF3iL6o3](https://openreview.net/forum?id=FoVF3iL6o3)}
+  url={https://openreview.net/forum?id=FoVF3iL6o3}
 }
 
 @article{xu2024fedmllm,
