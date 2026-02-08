@@ -16,7 +16,7 @@ You Only Communicate Once: One-shot Federated Learning for Multimodal Large Lang
 </p>
 
 ## TODO
-- [ ] Release YOCO code (Coming soon)
+- [x] Release YOCO code: [YOCO Implementation](https://github.com/1xbq1/FedMLLM/tree/yoco/YOCO)
 
 ## Directory Structure
 
