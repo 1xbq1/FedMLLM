@@ -1,4 +1,4 @@
-# YOCO: You Only Communicate Once
+# You Only Communicate Once: One-shot Federated Low-Rank Adaptation of MLLM
 
 This branch contains the implementation of **YOCO**, a one-shot federated fine-tuning method built upon [FedMLLM](https://github.com/1xbq1/FedMLLM/tree/main).
 
