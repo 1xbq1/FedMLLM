@@ -2,8 +2,8 @@ import json
 import random
 import os
 
-input_folder = '../../../data/hateful_memes/raw_data/partition-alpha0.5-clt10'
-output_folder = '../../../data/hateful_memes/minicpmv_data/partition-alpha0.5-clt10'
+input_folder = '../../../data/hateful_memes/raw_data/partition-alpha1.0-clt10'
+output_folder = '../../../data/hateful_memes/minicpmv_data/partition-alpha1.0-clt10'
 for file_name in os.listdir(input_folder):
     input_file_path = os.path.join(input_folder, file_name)
 
@@ -15,7 +15,7 @@ for file_name in os.listdir(input_folder):
             line = json.loads(linej)
             data_dict = {}
             data_dict['id'] = line['id']
-            data_dict['image'] = '/path/to/training_data/data/hateful_memes/raw_data/'+line['img']
+            data_dict['image'] = '/root/autodl-tmp/data/hateful_memes/raw_data/'+line['img']
             data_dict['conversations'] = []
             conv_dict = {}
             conv_dict['role'] = 'user'

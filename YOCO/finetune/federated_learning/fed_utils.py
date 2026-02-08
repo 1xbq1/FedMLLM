@@ -5,12 +5,12 @@ from sklearn.cluster import KMeans
 def get_proxy_dict(fed_args, global_dict):
     opt_proxy_dict = None
     proxy_dict = None
-    if fed_args.fed_alg in ['fedadagrad', 'fedyogi', 'fedadam'] or 'fedadagrad' in fed_args.fed_alg or 'fedyogi' in fed_args.fed_alg or 'fedadam' in fed_args.fed_alg:
+    if fed_args.fed_alg in ['fedadagrad', 'fedyogi', 'fedadam', 'combineam', 'combinema'] or 'fedadagrad' in fed_args.fed_alg or 'fedyogi' in fed_args.fed_alg or 'fedadam' in fed_args.fed_alg or 'combineam' in fed_args.fed_alg or 'combinema' in fed_args.fed_alg:
         proxy_dict, opt_proxy_dict = {}, {}
         for key in global_dict.keys():
             proxy_dict[key] = torch.zeros_like(global_dict[key])
             opt_proxy_dict[key] = torch.ones_like(global_dict[key]) * fed_args.fedopt_tau**2
-    elif fed_args.fed_alg == 'fedavgm' or 'fedavgm' in fed_args.fed_alg:
+    elif fed_args.fed_alg in ['fedavgm', 'conflict'] or 'fedavgm' in fed_args.fed_alg or 'conflict' in fed_args.fed_alg:
         proxy_dict = {}
         for key in global_dict.keys():
             proxy_dict[key] = torch.zeros_like(global_dict[key])

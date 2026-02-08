@@ -38,10 +38,32 @@ def meld_dump(instruct, outputs):
     print("pred_id", pred_idx)
     return pred_idx
 
+def get_sorted_checkpoints(folder_path):
+    subdirs = [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
+    
+    checkpoints = []
+    for subdir in subdirs:
+        match = re.match(r'checkpoint-(\d+)', subdir)
+        if match:
+            checkpoints.append((subdir, int(match.group(1))))
+    
+    checkpoints.sort(key=lambda x: x[1])
+    
+    return [checkpoint[0] for checkpoint in checkpoints]
 
 def run_inference(args):
+    '''size_in_gb = 15
+    size_in_bytes = size_in_gb * 1024**3
+    size_in_floats = size_in_bytes // 4
+    dummy_tensor = torch.empty(size_in_floats, device='cuda', dtype=torch.float32)'''
+
     model_type=  "openbmb/MiniCPM-V-2_6-int4"
-    path_to_adapter=f"./output/output__lora/checkpoint-{args.epoch}"
+    folder_path = f"./output/output__lora/{args.model_path}"
+    sorted_checkpoints = get_sorted_checkpoints(folder_path)
+    path_to_adapter=f"./output/output__lora/{args.model_path}/{sorted_checkpoints[args.epoch]}"
+#     path_to_adapter=f"./output/output__lora/{args.model_path}/checkpoint-{args.epoch}"
+    print("loading", path_to_adapter)
+    # path_to_adapter="./output/output__lora/checkpoint-1"
 
     model =  AutoModel.from_pretrained(
         model_type,
@@ -113,7 +135,8 @@ if __name__ == "__main__":
     parser.add_argument('--test-csv', default='../../data/hateful_memes/raw_data/test_seen.jsonl')
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--num-workers", type=int, default=8)
-    parser.add_argument("--epoch", type=int, default=25)
+    parser.add_argument("--epoch", type=int, default=0)
     args = parser.parse_args()
 
     run_inference(args)
+

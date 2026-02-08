@@ -11,6 +11,7 @@ from torchvision import transforms
 from tqdm import tqdm
 import numpy as np
 import math
+from bitsandbytes import functional as bnb
 
 import torch
 import transformers
@@ -23,7 +24,7 @@ from transformers.integrations import deepspeed
 from transformers import AutoModel, AutoTokenizer
 
 from dataset import SupervisedDataset, data_collator
-from trainer import CPMTrainer, CPMTrainerReg
+from trainer import CPMTrainer, CPMTrainerReg, CPMTrainerSign
 from federated_learning import *
 
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, get_peft_model_state_dict, set_peft_model_state_dict
@@ -77,15 +78,16 @@ class LoraArguments:
 
 @dataclass
 class FedArguments:
-    fed_alg: Optional[str] = field(default="fedadagrad-fedprox-adaptive", metadata={"help": "the algorithm to use"})
+    fed_alg: Optional[str] = field(default="fedsign", metadata={"help": "the algorithm to use"})
     mu_w: Optional[float] = field(default=0.1, metadata={"help": "the weight of regularization"})
     s_layer: Optional[int] = field(default=4, metadata={"help": "the number of regularization layers"})
-    num_rounds: Optional[int] = field(default=50, metadata={"help": "the number of rounds"})
+    num_rounds: Optional[int] = field(default=1, metadata={"help": "the number of rounds"})
     num_clients: Optional[int] = field(default=10, metadata={"help": "the number of clients"})
-    sample_clients: Optional[int] = field(default=2, metadata={"help": "the number of clients to sample"})
+    sample_clients: Optional[int] = field(default=10, metadata={"help": "the number of clients to sample"})
     split_strategy: Optional[str] = field(default="noniid", metadata={"help": "the split strategy"})
     init_learning_rate: Optional[float] = field(default=0.01, metadata={"help": "the initial learning rate"})
     prox_mu: Optional[float] = field(default=0.01, metadata={"help": "the mu parameter of FedProx"})
+    lam_sign: Optional[float] = field(default=0.1, metadata={"help": "the weight parameter for fedsign"})
     modality_num: Optional[int] = field(default=2, metadata={"help": "the number of modality or combines"})
     fedopt_tau: Optional[float] = field(default=1e-3, metadata={"help": "the tau parameter of FedAdagrad, FedYogi and FedAdam"})
     fedopt_eta: Optional[float] = field(default=1e-3, metadata={"help": "the global learning rate parameter of FedAdagrad, FedYogi and FedAdam"})
@@ -172,12 +174,26 @@ def get_parameter_number(model):
         all_param += num_params
         if param.requires_grad:
             trainable_params += num_params
-        
+
     return {'Total': all_param, 'Trainable': trainable_params}
 
+def get_low_rank_sign(W, r=8):
+    # SVD：W ≈ U @ diag(S) @ V^T
+    U, S, Vt = torch.linalg.svd(W, full_matrices=False)
+
+    U_r = U[:, :r]          # (d_output, r)
+    S_r = S[:r]             # (r,)
+    Vt_r = Vt[:r, :]        # (r, d_input)
+
+    A = torch.diag(torch.sqrt(S_r)) @ Vt_r  # (r, d_input)
+    B = U_r @ torch.diag(torch.sqrt(S_r))   # (d_output, r)
+
+    R_A = torch.sign(A).cuda()     # (r, d_input)
+    R_B = torch.sign(B).cuda()     # (d_output, r)
+
+    return R_A, R_B, A.cuda(), B.cuda()
 
 local_rank = 0
-
 
 def train():
     global local_rank
@@ -193,7 +209,7 @@ def train():
         fed_args,
     ) = parser.parse_args_into_dataclasses()
 
-    if getattr(training_args, "deepspeed", None) : 
+    if getattr(training_args, "deepspeed", None) :
         training_args.distributed_state.distributed_type = DistributedType.DEEPSPEED
 
     compute_dtype = (
@@ -212,7 +228,7 @@ def train():
             logging.warning(
                 "FSDP or ZeRO3 are not incompatible with QLoRA."
             )
-    
+
     model = AutoModel.from_pretrained(
         model_args.model_name_or_path,
         trust_remote_code=True,
@@ -228,11 +244,11 @@ def train():
         model.vpm.requires_grad_(False)
     if not training_args.tune_llm:
         model.llm.requires_grad_(False)
-        
+
     if training_args.use_lora:
         if training_args.use_lora and training_args.tune_llm:
             raise ValueError("The model cannot simultaneously adjust LLM parameters and apply LoRA.")
-            
+
         rank0_print("Currently using LoRA for fine-tuning the MiniCPM-V model.")
         for name, param in model.llm.named_parameters():
             param.requires_grad = False
@@ -262,19 +278,55 @@ def train():
         if training_args.gradient_checkpointing:
             model.enable_input_require_grads()
 
+    # generate sign_RA, sign_RB
+    model_undeq = AutoModel.from_pretrained(
+        "openbmb/MiniCPM-V-2_6",
+        trust_remote_code=True,
+        torch_dtype=compute_dtype,
+        device_map=device_map,
+    )
+#     for name, param in model_undeq.state_dict().items():
+#         print(name, param.shape)
+
+    q_proj = model_undeq.llm.model.layers[27].self_attn.q_proj.weight.detach().to(torch.float32)
+    del model_undeq
+    torch.cuda.empty_cache()
+
+    _, sign_RB, _, RB = get_low_rank_sign(q_proj, r=8)
+    # print("sign_RA.shape", sign_RA.shape)
+    # print("RA.shape", RA.shape)
+    print("sign_RB.shape", sign_RB.shape)
+
     # ===== Define the global and local models =====
     global_dict = copy.deepcopy(get_peft_model_state_dict(model))
+
+    for key in global_dict.keys():
+        if 'lora_B' in key:
+            global_dict[key] = RB
+            print("lora_B", key)
+
     local_dict_list = [copy.deepcopy(global_dict) for i in range(fed_args.num_clients)]
     proxy_dict, opt_proxy_dict = get_proxy_dict(fed_args, global_dict)
     global_auxiliary, auxiliary_model_list, auxiliary_delta_dict = get_auxiliary_dict(fed_args, global_dict)
 
+#random initial
+#     for key in global_dict.keys():
+#         if 'lora_A' in key:
+#             sign_RA = torch.sign(torch.randn(global_dict[key].shape[0], global_dict[key].shape[1])).cuda()
+#             print('sign_RA', key)
+#             print('sign_RA.shape', sign_RA.shape)
+#         elif 'lora_B' in key:
+#             sign_RB = torch.sign(torch.randn(global_dict[key].shape[0], global_dict[key].shape[1])).cuda()
+#             print('sign_RB', key)
+#             print('sign_RB.shape', sign_RB.shape)
+
     rank0_print(get_parameter_number(model))
 
-    llm_type = training_args.llm_type    
-    
+    llm_type = training_args.llm_type
+
     rank0_print(f'llm_type={llm_type}')
 
-    
+
     # Load data
     if hasattr(model.config, "slice_config"):
         model.config.slice_config.max_slice_nums = training_args.max_slice_nums
@@ -290,7 +342,7 @@ def train():
 
     transform_func = build_transform()
 
-    # ===== Split the dataset into clients ===== 
+    # ===== Split the dataset into clients =====
     local_datasets = []
     sample_num_list = []
     for i in range(fed_args.num_clients):
@@ -309,8 +361,9 @@ def train():
         )
         local_datasets.append(data_module)
         sample_num_list.append(len(data_module['train_dataset']))
-    
+
     training_loss = [[] for i in range(fed_args.num_clients)]
+    global_save = True
     for round in tqdm(range(fed_args.num_rounds)):
         clients_this_round = get_clients_this_round(fed_args, round)
         print(f">> ==================== Round {round+1} : {clients_this_round} ====================")
@@ -321,23 +374,29 @@ def train():
 
             set_peft_model_state_dict(model, global_dict)   # sync the global model to the local model
 
-            sub_dataset = local_datasets[client]
-            new_lr = cosine_warm_learning_rate(round, fed_args.init_learning_rate, fed_args.num_rounds, fed_args.num_rounds*0.01)
-            training_args.learning_rate = new_lr
+            for name, param in model.named_parameters():
+                if 'lora' in name and param.requires_grad:
+                    print(f"{name} is trainable")
 
+            sub_dataset = local_datasets[client]
+            #new_lr = cosine_warm_learning_rate(round, fed_args.init_learning_rate, fed_args.num_rounds, fed_args.num_rounds*0.01)
+            #training_args.learning_rate = new_lr
             training_args.gradient_checkpointing_kwargs={"use_reentrant":False}
-            if fed_args.fed_alg == 'fedprox' or 'fedprox' in fed_args.fed_alg:
-                if 'base' in fed_args.fed_alg:
-                    s_layer = 0
-                    mu_w = 1.0
-                elif 'adaptive' in fed_args.fed_alg:
-                    mu_w = fed_args.mu_w
-                    s_layer = fed_args.s_layer
-                trainer = CPMTrainerReg(
-                    global_state=global_dict,
-                    prox_mu=fed_args.prox_mu,
-                    mu_w = mu_w,
-                    s_layer = s_layer,
+            training_args.output_dir = f'../output/output__lora/client-{client}'
+
+            #trainable_params = [p for p in model.parameters() if p.requires_grad]
+            #optimizer = AdamW(trainable_params, lr=training_args.learning_rate)
+
+            #training_args.gradient_checkpointing_kwargs={"use_reentrant":False}
+
+
+
+            if fed_args.fed_alg == 'fedsign' or 'fedsign' in fed_args.fed_alg:
+                trainer = CPMTrainerSign(
+                    sign_RA=None,
+                    sign_RB=sign_RB,
+                    num_train_samples=sample_num_list[client],
+                    lam_sign=fed_args.lam_sign,
                     model=model,
                     tokenizer=tokenizer,
                     args=training_args,
@@ -354,22 +413,35 @@ def train():
             results = trainer.train()
             training_loss[client].append(results.training_loss)
             local_dict_list[client] = copy.deepcopy(get_peft_model_state_dict(model))
-        
-        global_dict, global_auxiliary = global_aggregate(
+
+            if global_save:
+                set_peft_model_state_dict(model, global_dict)
+
+                trainer.save_state()
+
+                safe_save_model_for_hf_trainer(
+                    trainer=trainer,
+                    output_dir=os.path.join(training_args.output_dir, f"global-lora"),
+                    bias=lora_args.lora_bias
+                )
+                global_save = False
+
+        '''global_dict, global_auxiliary = global_aggregate(
             fed_args, global_dict, local_dict_list, sample_num_list, \
             clients_this_round, round, proxy_dict=proxy_dict, \
             opt_proxy_dict=opt_proxy_dict, auxiliary_info=(global_auxiliary, auxiliary_delta_dict)
-        )
-        set_peft_model_state_dict(model, global_dict)   # Update global model
+        )'''
+        # set_peft_model_state_dict(model, global_dict)   # Update global model
 
-        if (round+1) % fed_args.save_model_freq == 0:
-            trainer.save_state()
+        # if (round+1) % fed_args.save_model_freq == 0:
+        # if True:
+        #     trainer.save_state()
 
-            safe_save_model_for_hf_trainer(
-                trainer=trainer,
-                output_dir=os.path.join(training_args.output_dir, f"checkpoint-{round+1}"),
-                bias=lora_args.lora_bias)
-        
+        #     safe_save_model_for_hf_trainer(
+        #         trainer=trainer,
+        #         output_dir=os.path.join(training_args.output_dir, f"global-lora"),
+        #         bias=lora_args.lora_bias)
+
         np.save(os.path.join(training_args.output_dir, "training_loss.npy"), np.array(training_loss))
 
 if __name__ == "__main__":

@@ -75,7 +75,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output_partition_path",
         type=str,
-        default='../../../data/hateful_memes/raw_data/partition-alpha0.5-clt10',
+        default='../../../data/hateful_memes/raw_data/partition-alpha1.0-clt10',
         help="Output path of hateful memes data set",
     )
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--alpha",
         type=float,
-        default=0.5,
+        default=1.0,
         help="alpha in direchlet distribution",
     )
     
