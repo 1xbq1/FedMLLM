@@ -81,6 +81,7 @@ class FedArguments:
     mu_w: Optional[float] = field(default=0.1, metadata={"help": "the weight of regularization"})
     s_layer: Optional[int] = field(default=4, metadata={"help": "the number of regularization layers"})
     num_rounds: Optional[int] = field(default=50, metadata={"help": "the number of rounds"})
+    early_stop_round: Optional[int] = field(default=-1, metadata={"help": "if > 0, break the federated loop after this many rounds; LR schedule still uses num_rounds so the per-round LR matches a full run"})
     num_clients: Optional[int] = field(default=10, metadata={"help": "the number of clients"})
     sample_clients: Optional[int] = field(default=2, metadata={"help": "the number of clients to sample"})
     split_strategy: Optional[str] = field(default="noniid", metadata={"help": "the split strategy"})
@@ -371,6 +372,10 @@ def train():
                 bias=lora_args.lora_bias)
         
         np.save(os.path.join(training_args.output_dir, "training_loss.npy"), np.array(training_loss))
+
+        if fed_args.early_stop_round > 0 and (round + 1) >= fed_args.early_stop_round:
+            rank0_print(f"[early stop] reached round {round + 1} >= early_stop_round={fed_args.early_stop_round}, breaking the federated loop.")
+            break
 
 if __name__ == "__main__":
     train()

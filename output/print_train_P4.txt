@@ -1,0 +1,68 @@
+[2026-06-04 18:34:02,816] [INFO] [real_accelerator.py:203:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Unused kwargs: ['_load_in_4bit', '_load_in_8bit', 'quant_method']. These kwargs are not used in <class 'transformers.utils.quantization_config.BitsAndBytesConfig'>.
+`low_cpu_mem_usage` was None, now set to True since model is quantized.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:04<00:04,  4.12s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.20s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.34s/it]
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Currently using LoRA for fine-tuning the MiniCPM-V model.
+trainable params: 617,236,480 || all params: 8,716,411,632 || trainable%: 7.0813
+/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/peft/utils/other.py:689: UserWarning: Unable to fetch remote file due to the following error 429 Client Error: Too Many Requests for url: https://huggingface.co/openbmb/MiniCPM-V-2_6-int4/resolve/main/config.json - silently ignoring the lookup for the file config.json in openbmb/MiniCPM-V-2_6-int4.
+  warnings.warn(
+/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/peft/utils/save_and_load.py:243: UserWarning: Could not find a config file in openbmb/MiniCPM-V-2_6-int4 - will assume that the vocabulary was not modified.
+  warnings.warn(
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/data1_sata/binqian/code/FedMLLM/finetune/finetune.py", line 381, in <module>
+[rank0]:     train()
+[rank0]:   File "/data1_sata/binqian/code/FedMLLM/finetune/finetune.py", line 268, in train
+[rank0]:     local_dict_list = [copy.deepcopy(global_dict) for i in range(fed_args.num_clients)]
+[rank0]:   File "/data1_sata/binqian/code/FedMLLM/finetune/finetune.py", line 268, in <listcomp>
+[rank0]:     local_dict_list = [copy.deepcopy(global_dict) for i in range(fed_args.num_clients)]
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/copy.py", line 146, in deepcopy
+[rank0]:     y = copier(x, memo)
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/copy.py", line 231, in _deepcopy_dict
+[rank0]:     y[deepcopy(key, memo)] = deepcopy(value, memo)
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/copy.py", line 153, in deepcopy
+[rank0]:     y = copier(memo)
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/_tensor.py", line 172, in __deepcopy__
+[rank0]:     new_storage = self._typed_storage()._deepcopy(memo)
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/storage.py", line 1134, in _deepcopy
+[rank0]:     return self._new_wrapped_storage(copy.deepcopy(self._untyped_storage, memo))
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/copy.py", line 153, in deepcopy
+[rank0]:     y = copier(memo)
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/storage.py", line 239, in __deepcopy__
+[rank0]:     new_storage = self.clone()
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/storage.py", line 253, in clone
+[rank0]:     return type(self)(self.nbytes(), device=self.device).copy_(self)
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 1.01 GiB. GPU 0 has a total capacity of 39.38 GiB of which 655.81 MiB is free. Process 271649 has 21.43 GiB memory in use. Including non-PyTorch memory, this process has 17.30 GiB memory in use. Of the allocated memory 16.68 GiB is allocated by PyTorch, and 224.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[rank0]:[W604 18:34:25.091361288 ProcessGroupNCCL.cpp:1479] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+E0604 18:34:26.514000 279870 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 279962) of binary: /data1_sata/binqian/miniconda3/envs/FedMLLM/bin/python3.10
+Traceback (most recent call last):
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+finetune.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-06-04_18:34:26
+  host      : lyg1055
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 279962)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

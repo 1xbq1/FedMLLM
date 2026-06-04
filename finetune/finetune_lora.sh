@@ -8,8 +8,10 @@ MASTER_PORT=6001
 
 MODEL="openbmb/MiniCPM-V-2_6-int4"
 #MODEL="openbmb/MiniCPM-Llama3-V-2_5"
-DATA="/path/to/training_data/data/hateful_memes/minicpmv_data/modality-missing/mrate-0.3/partition-alpha0.5-clt10"
-LLM_TYPE="qwen2" 
+PROMPT_ID="${PROMPT_ID:-P3}"           # 从环境变量读
+QRATE="${QRATE:-0.3}"
+DATA="/data1_sata/binqian/data/hateful_memes/minicpmv_data/modality-mix-${PROMPT_ID}/qrate-${QRATE}/partition-alpha0.5-clt10"
+LLM_TYPE="qwen2"
 #LLM_TYPE="llama3"
 MODEL_MAX_Length=1200
 
@@ -40,9 +42,10 @@ torchrun $DISTRIBUTED_ARGS finetune.py  \
     --model_max_length $MODEL_MAX_Length \
     --max_slice_nums 9 \
     --num_train_epoch 1 \
+    --early_stop_round 25 \
     --eval_steps 50000 \
-    --output_dir ../output/output__lora \
-    --logging_dir ../output/output_lora \
+    --output_dir ../output/output_lora_${PROMPT_ID}_mix_q${QRATE} \
+    --logging_dir ../output/output_lora_${PROMPT_ID}_mix_q${QRATE} \
     --logging_strategy "steps" \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \

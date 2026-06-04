@@ -1,0 +1,32 @@
+/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Unused kwargs: ['_load_in_4bit', '_load_in_8bit', 'quant_method']. These kwargs are not used in <class 'transformers.utils.quantization_config.BitsAndBytesConfig'>.
+`low_cpu_mem_usage` was None, now set to True since model is quantized.
+[Prompt P1] preamble: Select the best answer to the following multiple-choice question based on the text and image.
+[Prompt P1] question: Is the content hateful based on the text and image?
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.25s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.34s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.48s/it]
+/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/peft/config.py", line 205, in _get_peft_type
+    config_file = hf_hub_download(
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/huggingface_hub/utils/_deprecation.py", line 101, in inner_f
+    return f(*args, **kwargs)
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 106, in _inner_fn
+    validate_repo_id(arg_value)
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/huggingface_hub/utils/_validators.py", line 154, in validate_repo_id
+    raise HFValidationError(
+huggingface_hub.errors.HFValidationError: Repo id must be in the form 'repo_name' or 'namespace/repo_name': './output/output__lora/checkpoint-25'. Use `repo_type` argument if needed.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/data1_sata/binqian/code/FedMLLM/eval_hateful_prompt.py", line 140, in <module>
+    run_inference(args)
+  File "/data1_sata/binqian/code/FedMLLM/eval_hateful_prompt.py", line 74, in run_inference
+    model = PeftModel.from_pretrained(
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/peft/peft_model.py", line 484, in from_pretrained
+    PeftConfig._get_peft_type(
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/peft/config.py", line 211, in _get_peft_type
+    raise ValueError(f"Can't find '{CONFIG_NAME}' at '{model_id}'")
+ValueError: Can't find 'adapter_config.json' at './output/output__lora/checkpoint-25'

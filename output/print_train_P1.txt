@@ -1,0 +1,140 @@
+[2026-06-04 18:30:50,007] [INFO] [real_accelerator.py:203:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Unused kwargs: ['_load_in_4bit', '_load_in_8bit', 'quant_method']. These kwargs are not used in <class 'transformers.utils.quantization_config.BitsAndBytesConfig'>.
+`low_cpu_mem_usage` was None, now set to True since model is quantized.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:01<00:01,  1.73s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.10s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:02<00:00,  1.20s/it]
+Special tokens have been added in the vocabulary, make sure the associated word embeddings are fine-tuned or trained.
+Currently using LoRA for fine-tuning the MiniCPM-V model.
+trainable params: 617,236,480 || all params: 8,716,411,632 || trainable%: 7.0813
+{'Total': 5266148080, 'Trainable': 617236480}
+llm_type=qwen2
+Loading data...
+Loading data...
+Loading data...
+Loading data...
+Loading data...
+Loading data...
+Loading data...
+Loading data...
+Loading data...
+Loading data...
+  0%|          | 0/50 [00:00<?, ?it/s]>> ==================== Round 1 : [6, 9] ====================
+
+  0%|          | 0/1071 [00:00<?, ?it/s][A
+  0%|          | 1/1071 [00:01<32:21,  1.81s/it][A                                      
+                                                [A{'loss': 0.5569, 'grad_norm': 2.947870969772339, 'learning_rate': 3.6363636363636366e-06, 'epoch': 0.0}
+  0%|          | 0/50 [00:02<?, ?it/s]
+  0%|          | 1/1071 [00:01<32:21,  1.81s/it][A
+  0%|          | 2/1071 [00:03<27:15,  1.53s/it][A                                      
+                                                [A{'loss': 0.6786, 'grad_norm': 3.726019859313965, 'learning_rate': 7.272727272727273e-06, 'epoch': 0.0}
+  0%|          | 0/50 [00:03<?, ?it/s]
+  0%|          | 2/1071 [00:03<27:15,  1.53s/it][A
+  0%|          | 3/1071 [00:04<25:17,  1.42s/it][A                                      
+                                                [A{'loss': 0.6688, 'grad_norm': 4.01884126663208, 'learning_rate': 1.0909090909090909e-05, 'epoch': 0.0}
+  0%|          | 0/50 [00:05<?, ?it/s]
+  0%|          | 3/1071 [00:04<25:17,  1.42s/it][A
+  0%|          | 4/1071 [00:05<24:31,  1.38s/it][A                                      
+                                                [A{'loss': 0.6727, 'grad_norm': 3.6754117012023926, 'learning_rate': 1.4545454545454546e-05, 'epoch': 0.0}
+  0%|          | 0/50 [00:06<?, ?it/s]
+  0%|          | 4/1071 [00:05<24:31,  1.38s/it][A
+  0%|          | 5/1071 [00:07<24:10,  1.36s/it][A                                      
+                                                [A{'loss': 0.5751, 'grad_norm': 3.446760654449463, 'learning_rate': 1.8181818181818182e-05, 'epoch': 0.0}
+  0%|          | 0/50 [00:07<?, ?it/s]
+  0%|          | 5/1071 [00:07<24:10,  1.36s/it][A
+  1%|          | 6/1071 [00:08<25:26,  1.43s/it][A                                      
+                                                [A{'loss': 0.6794, 'grad_norm': 3.6315910816192627, 'learning_rate': 2.1818181818181818e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:09<?, ?it/s]
+  1%|          | 6/1071 [00:08<25:26,  1.43s/it][A
+  1%|          | 7/1071 [00:10<30:16,  1.71s/it][A                                      
+                                                [A{'loss': 0.7621, 'grad_norm': 4.134756088256836, 'learning_rate': 2.5454545454545457e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:11<?, ?it/s]
+  1%|          | 7/1071 [00:10<30:16,  1.71s/it][A
+  1%|          | 8/1071 [00:12<29:11,  1.65s/it][A                                      
+                                                [A{'loss': 0.5112, 'grad_norm': 2.9619979858398438, 'learning_rate': 2.9090909090909093e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:13<?, ?it/s]
+  1%|          | 8/1071 [00:12<29:11,  1.65s/it][A
+  1%|          | 9/1071 [00:13<27:58,  1.58s/it][A                                      
+                                                [A{'loss': 0.5402, 'grad_norm': 3.7968814373016357, 'learning_rate': 3.272727272727273e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:14<?, ?it/s]
+  1%|          | 9/1071 [00:13<27:58,  1.58s/it][A
+  1%|          | 10/1071 [00:15<26:59,  1.53s/it][A                                      
+                                                 [A{'loss': 0.5532, 'grad_norm': 3.114584445953369, 'learning_rate': 3.6363636363636364e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:15<?, ?it/s]
+  1%|          | 10/1071 [00:15<26:59,  1.53s/it][A
+  1%|          | 11/1071 [00:19<41:43,  2.36s/it][A                                      
+                                                 [A{'loss': 0.5563, 'grad_norm': 3.3961925506591797, 'learning_rate': 4e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:20<?, ?it/s]
+  1%|          | 11/1071 [00:19<41:43,  2.36s/it][A
+  1%|          | 12/1071 [00:20<36:08,  2.05s/it][A                                      
+                                                 [A{'loss': 0.5609, 'grad_norm': 3.054964780807495, 'learning_rate': 3.9999912160936486e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:21<?, ?it/s]
+  1%|          | 12/1071 [00:20<36:08,  2.05s/it][A
+  1%|          | 13/1071 [00:22<33:51,  1.92s/it][A                                      
+                                                 [A{'loss': 0.4578, 'grad_norm': 2.5702590942382812, 'learning_rate': 3.999964864451751e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:23<?, ?it/s]
+  1%|          | 13/1071 [00:22<33:51,  1.92s/it][A
+  1%|▏         | 14/1071 [00:26<45:24,  2.58s/it][A                                      
+                                                 [A{'loss': 0.5272, 'grad_norm': 2.5243890285491943, 'learning_rate': 3.999920945305778e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:27<?, ?it/s]
+  1%|▏         | 14/1071 [00:26<45:24,  2.58s/it][A
+  1%|▏         | 15/1071 [00:28<39:58,  2.27s/it][A                                      
+                                                 [A{'loss': 0.3909, 'grad_norm': 2.406068801879883, 'learning_rate': 3.99985945904151e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:28<?, ?it/s]
+  1%|▏         | 15/1071 [00:28<39:58,  2.27s/it][A
+  1%|▏         | 16/1071 [00:30<41:36,  2.37s/it][A                                      
+                                                 [A{'loss': 0.3434, 'grad_norm': 2.025446891784668, 'learning_rate': 3.999780406199038e-05, 'epoch': 0.01}
+  0%|          | 0/50 [00:31<?, ?it/s]
+  1%|▏         | 16/1071 [00:30<41:36,  2.37s/it][A  0%|          | 0/50 [00:34<?, ?it/s]
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/data1_sata/binqian/code/FedMLLM/finetune/finetune.py", line 381, in <module>
+[rank0]:     train()
+[rank0]:   File "/data1_sata/binqian/code/FedMLLM/finetune/finetune.py", line 355, in train
+[rank0]:     results = trainer.train()
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/transformers/trainer.py", line 1859, in train
+[rank0]:     return inner_training_loop(
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/transformers/trainer.py", line 2203, in _inner_training_loop
+[rank0]:     tr_loss_step = self.training_step(model, inputs)
+[rank0]:   File "/data1_sata/binqian/code/FedMLLM/finetune/trainer.py", line 175, in training_step
+[rank0]:     self.accelerator.backward(loss)
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/accelerate/accelerator.py", line 2125, in backward
+[rank0]:     loss.backward(**kwargs)
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/_tensor.py", line 648, in backward
+[rank0]:     torch.autograd.backward(
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/autograd/__init__.py", line 353, in backward
+[rank0]:     _engine_run_backward(
+[rank0]:   File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/autograd/graph.py", line 824, in _engine_run_backward
+[rank0]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 1.01 GiB. GPU 0 has a total capacity of 39.38 GiB of which 277.81 MiB is free. Including non-PyTorch memory, this process has 29.00 GiB memory in use. Process 270546 has 10.09 GiB memory in use. Of the allocated memory 27.07 GiB is allocated by PyTorch, and 1000.03 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+  1%|▏         | 16/1071 [00:34<37:25,  2.13s/it]
+[rank0]:[W604 18:31:36.884307911 ProcessGroupNCCL.cpp:1479] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+E0604 18:31:38.131000 269489 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 269601) of binary: /data1_sata/binqian/miniconda3/envs/FedMLLM/bin/python3.10
+Traceback (most recent call last):
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/data1_sata/binqian/miniconda3/envs/FedMLLM/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+finetune.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-06-04_18:31:38
+  host      : lyg1055
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 269601)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
